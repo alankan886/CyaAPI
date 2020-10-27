@@ -78,8 +78,8 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, 
-            target_metadata=target_metadata, 
+            connection=connection,
+            target_metadata=target_metadata,
             compare_type=True
         )
 
