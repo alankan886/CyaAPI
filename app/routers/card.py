@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .. models import Card
+from .. schemas.card import Card
 
 
 router = APIRouter()
