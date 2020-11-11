@@ -9,4 +9,4 @@ class Board(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
 
-    cards = relationship("Card", back_populates="board_id")
+    cards = relationship("Card", back_populates="board")
