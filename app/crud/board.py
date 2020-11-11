@@ -4,8 +4,12 @@ from .. import models
 from .. schemas import Board, BoardCreate
 
 
-def get_board(db: Session, board_id: int):
+def get_board_by_id(db: Session, board_id: int):
     return db.query(models.Board).filter(models.Board.id == board_id).first()
+
+
+def get_board_by_name(db: Session, board_name: str):
+    return db.quert(models.Board).filter(models.Board.name == board_name).first()
 
 
 def get_boards(db: Session):
