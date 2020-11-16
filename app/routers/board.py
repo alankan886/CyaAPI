@@ -42,7 +42,7 @@ def read_board(board_id: int, db: Session = Depends(get_db)):
 
 
 @router.get(
-    '/',
+    "",
     response_model=List[schemas.Board],
     responses={**boards_responses}
 )
@@ -53,8 +53,9 @@ def read_all_boards(db: Session = Depends(get_db)):
     return boards
 
 
+# "" path because the prefix is /boards, then with redirect slashes, that makes the path /boards/
 @router.post(
-    '/',
+    "",
     response_model=schemas.Board,
     responses={
         400: {
@@ -66,7 +67,7 @@ def read_all_boards(db: Session = Depends(get_db)):
             }
         }
     })
-def create_board(board: schemas.Board, db: Session = Depends(get_db)):
+def create_board(board: schemas.BoardCreate, db: Session = Depends(get_db)):
     db_board = crud.get_board_by_name(db, board_name=board.name)
     if db_board:
         raise HTTPException(status_code=400, detail=f"Board with the name {board.name} has already exists")
@@ -77,4 +78,6 @@ def create_board(board: schemas.Board, db: Session = Depends(get_db)):
 def delete_board(board_id: int, db: Session = Depends(get_db)):
     db_board = crud.get_board_by_id(db, board_id=board_id)
     if not db_board:
-        raise HTTPException(status_code=404)
+        raise HTTPException(status_code=404, detail=f"Board with id {board_id} is not found")
+    crud.remove_board(db, db_board)
+    return db_board
