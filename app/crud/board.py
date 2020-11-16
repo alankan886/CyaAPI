@@ -9,7 +9,7 @@ def get_board_by_id(db: Session, board_id: int):
 
 
 def get_board_by_name(db: Session, board_name: str):
-    return db.quert(models.Board).filter(models.Board.name == board_name).first()
+    return db.query(models.Board).filter(models.Board.name == board_name).first()
 
 
 def get_boards(db: Session):
@@ -22,3 +22,8 @@ def create_board(db: Session, board: BoardCreate):
     db.commit()
     db.refresh(db_board)
     return db_board
+
+
+def remove_board(db: Session, board: Board):
+    db.delete(board)
+    db.commit()
