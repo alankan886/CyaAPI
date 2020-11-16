@@ -8,7 +8,6 @@ from .extensions.db import SessionLocal, engine, Base
 
 app = FastAPI(title="CYA API")
 
-
 app.include_router(
     board.router,
     prefix='/boards',
