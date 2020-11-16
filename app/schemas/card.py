@@ -6,7 +6,9 @@ from pydantic import BaseModel
 
 class CardBase(BaseModel):
     name: str
-    tags: List[str] = []
+    # quality: int
+    # last_review: date
+    # tags: List[str] = []
 
 
 class CardCreate(CardBase):
@@ -15,9 +17,8 @@ class CardCreate(CardBase):
 
 class Card(CardBase):
     id: int
-    quality: int
-    last_review: date
-    next_review: date
+    board_id: int
+    # next_review: date
 
     class Config:
         orm_mode = True

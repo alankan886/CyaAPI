@@ -2,11 +2,11 @@ from typing import List
 
 from pydantic import BaseModel
 
+from .card import Card
+
 
 class BoardBase(BaseModel):
     name: str
-    size: int
-    tags: List[str] = []
 
 
 class BoardCreate(BoardBase):
@@ -15,7 +15,8 @@ class BoardCreate(BoardBase):
 
 class Board(BoardBase):
     id: int
-    board_id: int
+    size: int
+    cards: List[Card]
 
     class Config:
         orm_mode = True
