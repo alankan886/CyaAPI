@@ -24,6 +24,6 @@ def create_board(db: Session, board: BoardCreate):
     return db_board
 
 
-def remove_board(db: Session, board: Board):
+def delete_board(db: Session, board: Board):
     db.delete(board)
     db.commit()
