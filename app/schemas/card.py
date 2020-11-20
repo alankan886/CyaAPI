@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class CardBase(BaseModel):
     name: str
+    board_id: int
     # quality: int
     # last_review: date
     # tags: List[str] = []
@@ -17,7 +18,6 @@ class CardCreate(CardBase):
 
 class Card(CardBase):
     id: int
-    board_id: int
     # next_review: date
 
     class Config:
