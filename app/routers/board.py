@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 from .. import crud, schemas
 from ..extensions.db import get_db
 
-
 router = APIRouter()
 
 boards_responses = {
@@ -37,7 +36,7 @@ board_responses = {
 def read_board(board_id: int, db: Session = Depends(get_db)):
     db_board = crud.get_board_by_id(db, board_id=board_id)
     if not db_board:
-        raise HTTPException(status_code=404, detail='Board not found')
+        raise HTTPException(status_code=404, detail=f'Board with id={board_id} not found')
     return db_board
 
 
@@ -47,10 +46,10 @@ def read_board(board_id: int, db: Session = Depends(get_db)):
     responses={**boards_responses}
 )
 def read_all_boards(db: Session = Depends(get_db)):
-    boards = crud.get_boards(db)
-    if not boards:
+    db_boards = crud.get_boards(db)
+    if not db_boards:
         raise HTTPException(status_code=404, detail="No boards are found")
-    return boards
+    return db_boards
 
 
 # "" path because the prefix is /boards, then with redirect slashes, that makes the path /boards/
@@ -78,6 +77,6 @@ def create_board(board: schemas.BoardCreate, db: Session = Depends(get_db)):
 def delete_board(board_id: int, db: Session = Depends(get_db)):
     db_board = crud.get_board_by_id(db, board_id=board_id)
     if not db_board:
-        raise HTTPException(status_code=404, detail=f"Board with id {board_id} is not found")
-    crud.remove_board(db, db_board)
+        raise HTTPException(status_code=404, detail=f"Board with id={board_id} is not found")
+    crud.delete_board(db, db_board)
     return db_board
