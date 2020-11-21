@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .routers import card, board
 
 from . import crud, schemas
-from .extensions.db import SessionLocal, engine, Base
+from .db import SessionLocal, engine, Base
 
 # models.Base.metadata.create_all(bind=engine)
 

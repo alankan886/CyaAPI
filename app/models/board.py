@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 
-from .. extensions.db import Base
+from .. db import Base
 
 
 class Board(Base):

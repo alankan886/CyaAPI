@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from .. import crud, schemas
-from ..extensions.db import get_db
+from ..db import get_db
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -16,7 +16,7 @@ def read_card(card_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("")
-def read_cards(db: Session = Depends(get_db)):
+def read_all_cards(db: Session = Depends(get_db)):
     db_cards = crud.get_cards(db)
     if not db_cards:
         raise HTTPException(status_code=404, detail="No cards are found")
