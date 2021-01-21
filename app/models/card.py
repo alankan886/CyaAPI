@@ -9,10 +9,10 @@ class Card(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(Text, unique=True, index=True)
 
-    board_id = Column(
+    stack_id = Column(
         Integer,
-        ForeignKey("boards.id", ondelete='CASCADE'),
+        ForeignKey("stacks.id", ondelete='CASCADE'),
         nullable=False
     )
 
-    board = relationship("Board", back_populates="cards")
+    stack = relationship("Stack", back_populates="cards")

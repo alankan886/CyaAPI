@@ -1,12 +1,11 @@
 from typing import List
-from datetime import date
 
 from pydantic import BaseModel
 
 
 class CardBase(BaseModel):
     name: str
-    board_id: int
+    stack_id: int
     # quality: int
     # last_review: date
     # tags: List[str] = []

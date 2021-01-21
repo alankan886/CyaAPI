@@ -7,7 +7,7 @@ from app import schemas, models
 
 
 def test_read_card(test_client: TestClient, monkeypatch: MonkeyPatch):
-    test_data = {"id": 1, "name": "card1", "board_id": 1}
+    test_data = {"id": 1, "name": "card1", "stack_id": 1}
 
     def mock_get_card_by_id(db: Session, card_id: int):
         return test_data
@@ -33,17 +33,17 @@ def test_read_cards(test_client: TestClient, monkeypatch: MonkeyPatch):
         {
             "id": 1,
             "name": "card1",
-            "board_id": 1
+            "stack_id": 1,
         },
         {
             "id": 2,
             "name": "card2",
-            "board_id": 1
+            "stack_id": 1,
         },
         {
             "id": 3,
             "name": "card3",
-            "board_id": 2
+            "stack_id": 2,
         }
     ]
 
@@ -62,19 +62,19 @@ def test_read_cards_not_found(test_client: TestClient, monkeypatch: MonkeyPatch)
 
     monkeypatch.setattr(crud, "get_cards", mock_get_cards)
     response = test_client.get("/cards")
-    assert response.status_code == 404
-    assert response.json()["detail"] == "No cards are found"
+    assert response.status_code == 200
+    assert response.json() == []
 
 
 def test_create_card(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_request_data = {
         "name": "card1",
-        "board_id": 1
+        "stack_id": 1,
     }
     test_response_data = {
         "id": 1,
         "name": "card1",
-        "board_id": 1
+        "stack_ids": 1
     }
 
     def mock_create_card(db: Session, card: schemas.CardCreate):
@@ -93,13 +93,13 @@ def test_create_card(test_client: TestClient, monkeypatch: MonkeyPatch):
 def test_create_card_already_exists(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_request_data = {
         "name": "card1",
-        "board_id": 1
+        "stack_id": 1
     }
 
     card_exists = {
         "id": 1,
         "name": "card1",
-        "board_id": 1
+        "stack_id": 1
     }
 
     def mock_get_card_by_name(db: Session, card_name: str):
@@ -111,11 +111,15 @@ def test_create_card_already_exists(test_client: TestClient, monkeypatch: Monkey
     assert response.json()["detail"] == "Card with the name card1 has already exists"
 
 
+def test_update_card(test_client: TestClient, monkeypatch: MonkeyPatch):
+    pass
+
+
 def test_delete_card(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = {
         "id": 1,
         "name": "card1",
-        "board_id": 1
+        "stack_id": 1
     }
 
     def mock_get_card_by_id(db: Session, card_id: int):

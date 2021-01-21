@@ -5,15 +5,15 @@ from pydantic import BaseModel
 from .card import Card
 
 
-class BoardBase(BaseModel):
+class StackBase(BaseModel):
     name: str
 
 
-class BoardCreate(BoardBase):
+class StackCreate(StackBase):
     pass
 
 
-class Board(BoardBase):
+class Stack(StackBase):
     id: int
     size: int
     cards: List[Card]

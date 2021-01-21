@@ -7,8 +7,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from app.extensions.db import Base
-from app.models import Card, Board
+from app.db.db import Base
 
 
 # this is the Alembic Config object, which provides
