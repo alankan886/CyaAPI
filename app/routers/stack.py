@@ -46,11 +46,17 @@ def get_stack(stack_id: int, db: Session = Depends(get_db)):
     response_model=List[schemas.Stack],
     responses={**stacks_responses}
 )
-def get_all_stacks(db: Session = Depends(get_db)):
+def get_stacks(db: Session = Depends(get_db)):
     db_stacks = crud.read_stacks(db)
     if not db_stacks:
         return []
     return db_stacks
+
+
+@router.get("/{stack_id}/cards")
+def get_cards_in_stack(stack_id: int, db: Session = Depends(get_db)):
+    cards = crud.read_cards_in_stacks(db, stack_id)
+    return cards
 
 
 # "" path because the prefix is /stacks, then with redirect slashes, that makes the path /stacks/
@@ -78,11 +84,11 @@ def post_stack(stack: schemas.StackCreate, db: Session = Depends(get_db)):
 
 @router.put("/{stack_id}", response_model=schemas.Stack)
 def update_stack(stack_id: int, new_stack: schemas.StackCreate, db: Session = Depends(get_db)):
-    db_stack = crud.read_stack_by_id(db, stack_id=stack_id)
-    if not db_stack:
+    old_stack = crud.read_stack_by_id(db, stack_id=stack_id)
+    if not old_stack:
         stack = crud.create_stack(db, stack=new_stack)
         return JSONResponse(status_code=201, content=stack)
-    return crud.update_stack(db, old_stack=db_stack, new_stack=new_stack)
+    return crud.update_stack(db, old_stack=old_stack, new_stack=new_stack)
 
 
 @router.delete("/{stack_id}", response_model=schemas.Stack, responses={**stack_responses})
@@ -91,10 +97,4 @@ def delete_stack(stack_id: int, db: Session = Depends(get_db)):
     if not db_stack:
         raise HTTPException(status_code=404, detail=f"Stack with id={stack_id} is not found")
     crud.delete_stack(db, db_stack)
-    return db_stack
-
-
-@router.get("/{stack_id}/cards")
-def get_all_cards_in_stack(stack_id: int, db: Session = Depends(get_db)):
-    cards = crud.read_cards_in_stacks(db, stack_id)
-    return cards
+    return JSONResponse(status_code=204)
