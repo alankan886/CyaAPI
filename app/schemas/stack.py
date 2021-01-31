@@ -15,7 +15,6 @@ class StackCreate(StackBase):
 
 class Stack(StackBase):
     id: int
-    size: int
     cards: List[Card]
 
     class Config:

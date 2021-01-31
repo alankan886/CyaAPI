@@ -175,7 +175,7 @@ def test_put_card_detail(test_client: TestClient, monkeypatch: MonkeyPatch):
         "easiness": 2.99,
         "interval": 1,
         "repetitions": 2,
-        "last_review": "2021-01-01",
+        "last_review": "2021-01-01"
     }
     after_update = {
         "id": 1,

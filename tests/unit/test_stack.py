@@ -10,7 +10,6 @@ def test_get_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = {
         "id": 1,
         "name": "stack1",
-        "size": 0,
         "cards": []
     }
 
@@ -38,13 +37,11 @@ def test_get_boards(test_client: TestClient, monkeypatch: MonkeyPatch):
         {
             "id": 1,
             "name": "stack1",
-            "size": 0,
             "cards": []
         },
         {
             "id": 2,
             "name": "stack2",
-            "size": 1,
             "cards": [
                 {
                     "id": 1,
@@ -115,7 +112,6 @@ def test_post_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_response_data = {
         "id": 1,
         "name": "stack1",
-        "size": 0,
         "cards": []
     }
 
@@ -140,7 +136,6 @@ def test_post_stack_already_exists(test_client: TestClient, monkeypatch: MonkeyP
     stack_exists = {
         "id": 1,
         "name": "stack1",
-        "size": 0,
         "cards": []
     }
 
@@ -157,14 +152,12 @@ def test_put_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     before_udpate = {
         "id": 1,
         "name": "oldname",
-        "size": 0,
         "cards": []
     }
 
     after_update = {
         "id": 1,
         "name": "newname",
-        "size": 0,
         "cards": []
     }
 
@@ -186,7 +179,6 @@ def test_put_stack_not_found(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = {
         "id": 1,
         "name": "newname",
-        "size": 0,
         "cards": []
     }
 
@@ -207,7 +199,6 @@ def test_delete_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = {
         "id": 1,
         "name": "stack1",
-        "size": 0,
         "cards": []
     }
 

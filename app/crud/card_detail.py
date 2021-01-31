@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
+from supermemo2 import first_review
 
 from .. import models
 from .. schemas import CardDetail, CardDetailCreate
@@ -22,12 +25,14 @@ def read_card_details(db: Session):
 
 # TODO: use supermemo2 to calc next_review
 def create_card_detail(db: Session, card_detail: CardDetailCreate):
-    # handle setting the latest field to true or false
-    db_card_detail = models.CardDetail(**card_detail.dict())
+    # TODO: handle setting the latest field to true or false
+    card_detail_dict = card_detail.dict()
+    card_detail_dict["next_review"] = first_review(card_detail.quality, card_detail.last_review).review_date
+    card_detail_dict["latest"] = True
+    db_card_detail = models.CardDetail(**card_detail_dict)
     db.add(db_card_detail)
     db.commit()
     db.refresh(db_card_detail)
-    print(db_card_detail.latest)
     return db_card_detail
 
 
