@@ -28,11 +28,11 @@ def create_stack(db: Session, stack: StackCreate):
     return db_stack
 
 
-def update_stack(db: Session, old_stack: Stack, new_stack: StackCreate):
-    old_stack.name = new_stack.name
+def update_stack(db: Session, stack: Stack, new_info: StackCreate):
+    stack.name = new_info.name
     db.commit()
-    db.refresh(old_stack)
-    return old_stack
+    db.refresh(stack)
+    return stack
 
 
 def delete_stack(db: Session, stack: Stack):

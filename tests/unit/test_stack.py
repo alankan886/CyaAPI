@@ -32,7 +32,7 @@ def test_get_stack_not_found(test_client: TestClient, monkeypatch: MonkeyPatch):
     assert response.json()["detail"] == "Stack with id=1 not found"
 
 
-def test_get_boards(test_client: TestClient, monkeypatch: MonkeyPatch):
+def test_get_stacks(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = [
         {
             "id": 1,
@@ -46,7 +46,16 @@ def test_get_boards(test_client: TestClient, monkeypatch: MonkeyPatch):
                 {
                     "id": 1,
                     "name": "card1",
-                    "stack_id": 2
+                    "stack_id": 2,
+                    "quality": 3,
+                    "prev_easiness": 2.5,
+                    "easiness": 2.36,
+                    "prev_interval": 1,
+                    "interval": 1,
+                    "prev_repetitions": 1,
+                    "repetitions": 2,
+                    "prev_review_date": "2021-01-01",
+                    "review_date": "2021-01-02",
                 }
             ]
         }
@@ -102,6 +111,11 @@ def test_get_cards_in_stack_not_found(test_client: TestClient, monkeypatch: Monk
     response = test_client.get("/stacks/2/cards")
     assert response.status_code == 200
     assert response.json() == []
+
+
+# TODO:
+def test_get_cards_in_stack_due():
+    pass
 
 
 def test_post_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
@@ -164,7 +178,7 @@ def test_put_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     def mock_read_stack_by_id(db: Session, stack_id: int):
         return before_udpate
 
-    def mock_update_stack(db: Session, old_stack: schemas.Stack, new_stack: schemas.StackCreate):
+    def mock_update_stack(db: Session, stack: schemas.Stack, new_info: schemas.StackCreate):
         return after_update
 
     monkeypatch.setattr(crud, "read_stack_by_id", mock_read_stack_by_id)
