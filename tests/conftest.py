@@ -1,10 +1,11 @@
 import os
+from typing import Optional, List
 
 import pytest
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy_utils import database_exists, create_database, drop_database
 from app.db.db import Base, get_db
 
@@ -16,10 +17,6 @@ SQLALCHEMY_DATABASE_URL = os.environ.get('TEST_DB')
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
 )
-
-# TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Base.metadata.create_all(bind=engine)
 
 
 def get_test_db():
@@ -64,3 +61,13 @@ def test_db_session():
 def test_client():
     client = TestClient(app)
     yield client
+
+
+def add_commit_refresh(test_db_session: Session, *args: Optional[List[object]]):
+    for arg in args:
+        test_db_session.add(arg)
+
+    test_db_session.commit()
+
+    for arg in args:
+        test_db_session.refresh(arg)

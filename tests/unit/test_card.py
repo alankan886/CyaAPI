@@ -396,11 +396,11 @@ def test_patch_next_card(test_client: TestClient, monkeypatch: MonkeyPatch):
     def mock_read_card_by_id(db: Session, card_id: int):
         return before_update
 
-    def mock_update_card(db: Session, card: schemas.Card, new_info: schemas.CardOptionalAttrs):
+    def mock_update_next_card(db: Session, card: schemas.Card, new_info: schemas.CardNext):
         return after_update
 
     monkeypatch.setattr(crud, "read_card_by_id", mock_read_card_by_id)
-    monkeypatch.setattr(crud, "update_card", mock_update_card)
+    monkeypatch.setattr(crud, "update_next_card", mock_update_next_card)
     response = test_client.patch("/cards/1/next", json=test_request_data)
     assert response.status_code == 200
     assert response.json() == after_update

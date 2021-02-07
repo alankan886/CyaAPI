@@ -11,7 +11,7 @@ class CardBase(BaseModel):
     prev_easiness: float
     prev_interval: int
     prev_repetitions: int
-    prev_review_date: str
+    prev_review_date: date
 
 
 class CardBaseOptional(BaseModel):
@@ -21,7 +21,7 @@ class CardBaseOptional(BaseModel):
     prev_easiness: Optional[float]
     prev_interval: Optional[int]
     prev_repetitions: Optional[int]
-    prev_review_date: Optional[str]
+    prev_review_date: Optional[date]
 
 
 class CardCreate(CardBase):
@@ -32,12 +32,16 @@ class CardOptionalAttrs(CardBaseOptional):
     pass
 
 
+class CardNext(CardBaseOptional):
+    quality: int
+
+
 class Card(CardBase):
     id: int
     easiness: float
     interval: int
     repetitions: int
-    review_date: str
+    review_date: date
 
     class Config:
         orm_mode = True

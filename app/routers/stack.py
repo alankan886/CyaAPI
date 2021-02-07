@@ -83,12 +83,12 @@ def post_stack(stack: schemas.StackCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{stack_id}", response_model=schemas.Stack)
-def update_stack(stack_id: int, new_stack: schemas.StackCreate, db: Session = Depends(get_db)):
-    old_stack = crud.read_stack_by_id(db, stack_id=stack_id)
-    if not old_stack:
-        stack = crud.create_stack(db, stack=new_stack)
+def update_stack(stack_id: int, new_info: schemas.StackCreate, db: Session = Depends(get_db)):
+    db_stack = crud.read_stack_by_id(db, stack_id=stack_id)
+    if not db_stack:
+        stack = crud.create_stack(db, stack=new_info)
         return JSONResponse(status_code=201, content=stack)
-    return crud.update_stack(db, old_stack=old_stack, new_stack=new_stack)
+    return crud.update_stack(db, stack=db_stack, new_info=new_info)
 
 
 @router.delete("/{stack_id}", response_model=schemas.Stack, responses={**stack_responses})

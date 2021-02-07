@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
@@ -18,7 +18,7 @@ def get_card(card_id: int, db: Session = Depends(get_db)):
     return db_card
 
 
-@router.get("")
+@router.get("", response_model=List[schemas.Card])
 def get_cards(filter: Optional[str] = None, db: Session = Depends(get_db)):
     if filter:
         db_cards = crud.read_cards_due(db, filter)
@@ -48,18 +48,18 @@ def post_first_review_card(card: schemas.CardOptionalAttrs, db: Session = Depend
 
 @router.patch("/{card_id}")
 def patch_card(card_id: int, new_info: schemas.CardOptionalAttrs, db: Session = Depends(get_db)):
-    old_card = crud.read_card_by_id(db, card_id)
-    if not old_card:
+    db_card = crud.read_card_by_id(db, card_id)
+    if not db_card:
         return JSONResponse(status_code=201, content=crud.create_card(db, new_info))
-    return crud.update_card(db, card=old_card, new_info=new_info)
+    return crud.update_card(db, db_card, new_info)
 
 
 @router.patch("/{card_id}/next")
-def patch_next_card(card_id: int, new_card: schemas.CardOptionalAttrs, db: Session = Depends(get_db)):
-    old_card = crud.read_card_by_id(db, card_id)
-    if not old_card:
+def patch_next_card(card_id: int, new_info: schemas.CardNext, db: Session = Depends(get_db)):
+    db_card = crud.read_card_by_id(db, card_id)
+    if not db_card:
         return HTTPException(status_code=404, detail=f"Card with id={card_id} not found")
-    return crud.update_card(db, old_card, new_card)
+    return crud.update_next_card(db, db_card, new_info)
 
 
 @router.delete('/{card_id}')
