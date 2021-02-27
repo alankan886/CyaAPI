@@ -36,28 +36,11 @@ def test_get_stacks(test_client: TestClient, monkeypatch: MonkeyPatch):
     test_data = [
         {
             "id": 1,
-            "name": "stack1",
-            "cards": []
+            "name": "stack1"
         },
         {
             "id": 2,
-            "name": "stack2",
-            "cards": [
-                {
-                    "id": 1,
-                    "name": "card1",
-                    "stack_id": 2,
-                    "quality": 3,
-                    "prev_easiness": 2.5,
-                    "easiness": 2.36,
-                    "prev_interval": 1,
-                    "interval": 1,
-                    "prev_repetitions": 1,
-                    "repetitions": 2,
-                    "prev_review_date": "2021-01-01",
-                    "review_date": "2021-01-02",
-                }
-            ]
+            "name": "stack2"
         }
     ]
 
@@ -165,14 +148,12 @@ def test_post_stack_already_exists(test_client: TestClient, monkeypatch: MonkeyP
 def test_put_stack(test_client: TestClient, monkeypatch: MonkeyPatch):
     before_udpate = {
         "id": 1,
-        "name": "oldname",
-        "cards": []
+        "name": "oldname"
     }
 
     after_update = {
         "id": 1,
-        "name": "newname",
-        "cards": []
+        "name": "newname"
     }
 
     def mock_read_stack_by_id(db: Session, stack_id: int):

@@ -43,7 +43,7 @@ def get_stack(stack_id: int, db: Session = Depends(get_db)):
 
 @router.get(
     "",
-    response_model=List[schemas.Stack],
+    response_model=List[schemas.StackNoCards],
     responses={**stacks_responses}
 )
 def get_stacks(db: Session = Depends(get_db)):
@@ -82,7 +82,7 @@ def post_stack(stack: schemas.StackCreate, db: Session = Depends(get_db)):
     return crud.create_stack(db=db, stack=stack)
 
 
-@router.put("/{stack_id}", response_model=schemas.Stack)
+@router.put("/{stack_id}", response_model=schemas.StackNoCards)
 def update_stack(stack_id: int, new_info: schemas.StackCreate, db: Session = Depends(get_db)):
     db_stack = crud.read_stack_by_id(db, stack_id=stack_id)
     if not db_stack:

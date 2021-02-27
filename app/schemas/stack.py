@@ -13,6 +13,13 @@ class StackCreate(StackBase):
     pass
 
 
+class StackNoCards(StackBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
 class Stack(StackBase):
     id: int
     cards: List[Card]

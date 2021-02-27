@@ -81,6 +81,7 @@ def update_card(db: Session, card: Card, new_info: CardOptionalAttrs):
 
 
 def update_next_card(db: Session, card: Card, new_info: CardNext):
+    # TODO: This needs more work on the naming, and probably remove quality out of update_attrs?
     update_attrs = {
         "quality": None,
         "prev_easiness": "easiness",
