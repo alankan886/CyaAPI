@@ -20,23 +20,23 @@ pytest
 <summary>Stack</summary>
 
 + [GET /stacks](#get-stacks)
-+ [GET /stacks/[stack_id]](#get-stacksstackid)
-+ [GET /stacks/[stack_id]/cards](#get-stacks_stackidcards)
++ [GET /stacks/[stack_id]](#get-stacks_stack_id)
++ [GET /stacks/[stack_id]/cards](#get-stacks_stack_id_cards)
 + [POST /stacks](#post-stacks)
-+ [PUT /stacks/[stack_id]](#put-stacksstackid)
-+ [DELETE /stacks/[stack_id]](#delete-stacksstackid)
++ [PUT /stacks/[stack_id]](#put-stacks_stack_id)
++ [DELETE /stacks/[stack_id]](#delete-stacks_stack_id)
 </details>
 
 <details open>
 <summary>Card</summary>
 
 + [GET /cards](#get-cards)
-+ [GET /cards/[card_id]](#get-cardscardid)
++ [GET /cards/[card_id]](#get-cards_card_id)
 + [POST /cards](#post-cards)
-+ [POST /cards/first-review](#post-cardsfirst-review)
-+ [PATCH /cards/[card_id]](#patch-cardscardid)
-+ [PATCH /cards/[card_id]/review](#patch-cardscardidreview)
-+ [DELETE /cards/[card_id]](#delete-cardscardid)
++ [POST /cards/first-review](#post-cards_first_review)
++ [PATCH /cards/[card_id]](#patch-cards_card_id)
++ [PATCH /cards/[card_id]/review](#patch-cards_card_id_review)
++ [DELETE /cards/[card_id]](#delete-cards_card_id)
 </ul>
 </details>
 
@@ -58,6 +58,8 @@ Returns a list of all the stacks.
 </details>
 <br>
 
+<a name="get-stacks_stack_id">
+
 ### GET /stacks/[stack_id]
 ---
 Returns a stack.
@@ -78,6 +80,8 @@ Required: <br>
 </details>
 
 <br>
+
+<a name="get-stacks_stack_id_cards">
 
 ### GET /stacks/[stack_id]/cards
 ---
@@ -159,6 +163,8 @@ Required: <br>
 
 <br>
 
+<a name="put-stacks_stack_id">
+
 ### PUT /stacks/[stack_id]
 ---
 Updates a stack.
@@ -200,6 +206,8 @@ Required: <br>
 </details>
 
 <br>
+
+<a name="delete-stacks_stack_id">
 
 ### DELETE /stacks/[stack_id]
 ---
@@ -256,6 +264,8 @@ Returns all cards
 </details>
 
 <br>
+
+<a name="get-cards_card_id">
 
 ### GET /cards/[card_id]
 ---
@@ -355,6 +365,8 @@ Required: <br>
 
 <br>
 
+<a name="post-cards_first_review">
+
 ### POST /cards/first-review
 ---
 Adds a first time reviewed card into a stack.
@@ -408,6 +420,8 @@ Required: <br>
 
 <br>
 
+<a name="patch-cards_card_id">
+
 ### PATCH /cards/[card_id]
 ---
 Partially updates a card.
@@ -458,6 +472,8 @@ Optional: <br>
 </details>
 
 <br>
+
+<a name="patch-cards_card_id_review">
 
 ### PATCH /cards/[card_id]/review
 ---
@@ -522,6 +538,8 @@ Optional: <br>
 </details>
 
 <br>
+
+<a name="delete-cards_card_id">
 
 ### DELETE /cards/[card_id]
 ---
