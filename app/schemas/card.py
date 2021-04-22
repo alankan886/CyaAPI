@@ -28,12 +28,19 @@ class CardCreate(CardBase):
     pass
 
 
+class CardCreateFirstReview(BaseModel):
+    name: str
+    stack_id: int
+    quality: int
+
+
 class CardOptionalAttrs(CardBaseOptional):
     pass
 
 
-class CardNext(CardBaseOptional):
+class CardReview(CardBase):
     quality: int
+    prev_review_date: Optional[date]
 
 
 class Card(CardBase):

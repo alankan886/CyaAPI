@@ -8,18 +8,8 @@ from sqlalchemy.orm import Session
 from .. import crud, schemas
 from ..db import get_db
 
-router = APIRouter()
 
-stacks_responses = {
-    404: {
-        "description": "Stacks not found",
-        "content": {
-            "application/json": {
-                "example": {"detail": "No stacks are found"}
-            }
-        }
-    }
-}
+router = APIRouter()
 
 stack_responses = {
     404: {
@@ -44,10 +34,10 @@ def get_stack(stack_id: int, db: Session = Depends(get_db)):
 @router.get(
     "",
     response_model=List[schemas.StackNoCards],
-    responses={**stacks_responses}
 )
 def get_stacks(db: Session = Depends(get_db)):
     db_stacks = crud.read_stacks(db)
+    # TODO: is this check necessary?
     if not db_stacks:
         return []
     return db_stacks
@@ -55,6 +45,10 @@ def get_stacks(db: Session = Depends(get_db)):
 
 @router.get("/{stack_id}/cards")
 def get_cards_in_stack(stack_id: int, db: Session = Depends(get_db)):
+    db_stack = crud.read_stack_by_id(db, stack_id=stack_id)
+    if not db_stack:
+        raise HTTPException(status_code=404, detail=f'Stack with id={stack_id} not found')
+
     cards = crud.read_cards_in_stacks(db, stack_id)
     return cards
 

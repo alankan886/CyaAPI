@@ -25,6 +25,7 @@ def get_cards(filter: Optional[str] = None, db: Session = Depends(get_db)):
     else:
         db_cards = crud.read_cards(db)
 
+    # TODO: might not need this
     if not db_cards:
         return []
     return db_cards
@@ -38,8 +39,8 @@ def post_card(card: schemas.CardCreate, db: Session = Depends(get_db)):
     return crud.create_card(db, card, False)
 
 
-@router.post("/first", status_code=201)
-def post_first_review_card(card: schemas.CardOptionalAttrs, db: Session = Depends(get_db)):
+@router.post("/first-review", status_code=201)
+def post_first_review_card(card: schemas.CardCreateFirstReview, db: Session = Depends(get_db)):
     db_card = crud.read_card_by_name(db, card.name)
     if db_card:
         raise HTTPException(status_code=400, detail=f"Card with the name {card.name} has already exists")
@@ -54,8 +55,8 @@ def patch_card(card_id: int, new_info: schemas.CardOptionalAttrs, db: Session = 
     return crud.update_card(db, db_card, new_info)
 
 
-@router.patch("/{card_id}/next")
-def patch_next_card(card_id: int, new_info: schemas.CardNext, db: Session = Depends(get_db)):
+@router.patch("/{card_id}/review")
+def patch_next_card(card_id: int, new_info: schemas.CardReview, db: Session = Depends(get_db)):
     db_card = crud.read_card_by_id(db, card_id)
     if not db_card:
         return HTTPException(status_code=404, detail=f"Card with id={card_id} not found")

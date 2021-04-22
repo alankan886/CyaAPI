@@ -33,7 +33,7 @@ def read_cards_due(db: Session, filter: str):
     return db.query(models.Card).filter(models.Card.review_date <= due_date).all()
 
 
-def create_card(db: Session, card: CardCreate, is_first_review: bool): 
+def create_card(db: Session, card: CardCreate, is_first_review: bool):
     prev_review_date = card.prev_review_date if card.prev_review_date else None
 
     if is_first_review:
