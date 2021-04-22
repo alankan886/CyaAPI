@@ -20,23 +20,23 @@ pytest
 <summary>Stack</summary>
 
 + [GET /stacks](#get-stacks)
-+ [GET /stacks/[stack_id]](#get-stacks_stack_id)
-+ [GET /stacks/[stack_id]/cards](#get-stacks_stack_id_cards)
++ [GET /stacks/[stack_id]](#get-stacksstackid)
++ [GET /stacks/[stack_id]/cards](#get-stacks_stackidcards)
 + [POST /stacks](#post-stacks)
-+ [PUT /stacks/[stack_id]](#put-stacks_stack_id)
-+ [DELETE /stacks/[stack_id]](#delete-stacks_stack_id)
++ [PUT /stacks/[stack_id]](#put-stacksstackid)
++ [DELETE /stacks/[stack_id]](#delete-stacksstackid)
 </details>
 
 <details open>
 <summary>Card</summary>
 
 + [GET /cards](#get-cards)
-+ [GET /cards/[card_id]](#get-cards_card_id)
++ [GET /cards/[card_id]](#get-cardscardid)
 + [POST /cards](#post-cards)
-+ [POST /cards/first](#post-cards_first)
-+ [PATCH /cards/[card_id]](#patch-cards_card_id)
-+ [PATCH /cards/[card_id]/review](#patch-cards_card_id_next)
-+ [DELETE /cards/[card_id]](#delete-cards_card_id)
++ [POST /cards/first-review](#post-cardsfirst-review)
++ [PATCH /cards/[card_id]](#patch-cardscardid)
++ [PATCH /cards/[card_id]/review](#patch-cardscardidreview)
++ [DELETE /cards/[card_id]](#delete-cardscardid)
 </ul>
 </details>
 
