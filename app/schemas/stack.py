@@ -5,17 +5,23 @@ from pydantic import BaseModel
 from .card import Card
 
 
-class BoardBase(BaseModel):
+class StackBase(BaseModel):
     name: str
 
 
-class BoardCreate(BoardBase):
+class StackCreate(StackBase):
     pass
 
 
-class Board(BoardBase):
+class StackNoCards(StackBase):
     id: int
-    size: int
+
+    class Config:
+        orm_mode = True
+
+
+class Stack(StackBase):
+    id: int
     cards: List[Card]
 
     class Config:

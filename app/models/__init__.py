@@ -1,2 +1,2 @@
-from .board import Board
+from .stack import Stack
 from .card import Card

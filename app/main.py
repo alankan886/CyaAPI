@@ -1,17 +1,14 @@
 from fastapi import FastAPI
-from .routers import card, board
+from .routers import stack, card
 
 from . import crud, schemas
-from .db import SessionLocal, engine, Base
-
-# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="CYA API")
 
 app.include_router(
-    board.router,
-    prefix='/boards',
-    tags=['boards']
+    stack.router,
+    prefix='/stacks',
+    tags=['stacks']
 )
 
 app.include_router(
