@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from supermemo2 import first_review, SMTwo
 
 from .. import models
-from .. schemas import Card, CardCreate, CardOptionalAttrs, CardNext
+from .. schemas import Card, CardCreate, CardOptionalAttrs, CardReview
 from . util import update_sm_two
 
 
@@ -80,7 +80,7 @@ def update_card(db: Session, card: Card, new_info: CardOptionalAttrs):
     return card
 
 
-def update_next_card(db: Session, card: Card, new_info: CardNext):
+def update_next_card(db: Session, card: Card, new_info: CardReview):
     # TODO: This needs more work on the naming, and probably remove quality out of update_attrs?
     update_attrs = {
         "quality": None,
