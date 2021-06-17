@@ -38,7 +38,7 @@ class CardOptionalAttrs(CardBaseOptional):
     pass
 
 
-class CardReview(CardBase):
+class CardReview(CardBaseOptional):
     quality: int
     prev_review_date: Optional[date]
 
