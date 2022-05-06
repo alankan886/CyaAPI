@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from ..schemas import Item
+
 router = APIRouter(
     prefix="/items",
     tags=["items"],
@@ -7,9 +9,8 @@ router = APIRouter(
     )
 
 
-@router.get("/")
+@router.get("/", response_model = Item)
 async def read_items():
-    # TODO: add pagination?
     return {"hello": "world"}
 
 @router.post("/")
