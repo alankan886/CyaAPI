@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Text, ForeignKey, Float, Date
 from sqlalchemy.orm import relationship
 
-from .. db import Base
+from ..db import Base
 
 
 class Item(Base):
@@ -9,9 +9,7 @@ class Item(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(Text, index=True)
     queue_id = Column(
-        Integer,
-        ForeignKey("queues.id", ondelete='CASCADE'),
-        nullable=False
+        Integer, ForeignKey("queues.id", ondelete="CASCADE"), nullable=False
     )
     quality = Column(Integer)
     easiness = Column(Float)
