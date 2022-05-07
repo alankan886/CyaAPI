@@ -14,3 +14,10 @@ class Item(ItemBase):
     easiness: float
     interval: int
     repetitions: int
+    review_date: date
+
+class ItemCreate(ItemBase):
+    easiness: Optional[float]
+    interval: Optional[int]
+    repetitions: Optional[int]
+    review_date: Optional[date]
