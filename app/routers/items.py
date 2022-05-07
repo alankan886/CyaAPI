@@ -16,8 +16,13 @@ async def read_items(db: Session = Depends(get_db)):
     return crud.read_items(db)
 
 
-@router.post("/", response_model=schemas.Item)
+@router.post("/", status_code=201, response_model=schemas.Item)
 async def create_item():
+    return {"hello": "world"}
+
+
+@router.post("/first-review", status_code=201, response_model=schemas.Item)
+async def create_first_review_item():
     return {"hello": "world"}
 
 
