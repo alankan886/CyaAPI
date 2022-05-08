@@ -16,8 +16,24 @@ class Item(ItemBase):
     repetitions: int
     review_date: date
 
+
 class ItemCreate(ItemBase):
     easiness: Optional[float]
     interval: Optional[int]
     repetitions: Optional[int]
+    review_date: Optional[date]
+
+
+class ItemPartialUpdate(BaseModel):
+    name: Optional[str]
+    stack_id: Optional[int]
+    quality: Optional[int]
+    easiness: Optional[float]
+    interval: Optional[int]
+    repetitions: Optional[int]
+    review_date: Optional[date]
+
+
+class ItemReview(BaseModel):
+    quality: int
     review_date: Optional[date]
