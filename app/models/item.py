@@ -16,5 +16,6 @@ class Item(Base):
     interval = Column(Integer)
     repetitions = Column(Integer)
     review_date = Column(Date)
+    created_at = Column(Date)
 
     queue = relationship("Queue", back_populates="items")

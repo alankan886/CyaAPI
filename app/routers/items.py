@@ -10,17 +10,16 @@ from ..db import get_db
 router = APIRouter(
     prefix="/items",
     tags=["Items"],
-    responses={404: {"description": "Item is not found"}},
 )
 
 
 @router.get("/", response_model=List[schemas.Item])
-async def read_items(db: Session = Depends(get_db)):
-    return crud.read_items(db)
+async def read_items(today: bool = False, db: Session = Depends(get_db)):
+    return crud.read_items(db, today)
 
 
-@router.post("/", status_code=201, response_model=schemas.ItemCreate)
-async def create_item(item: schemas.Item, db: Session = Depends(get_db)):
+@router.post("/", status_code=201, response_model=schemas.Item)
+async def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
     if crud.read_item_in_queue_by_name(item):
         raise HTTPException(
             status_code=400,
@@ -31,7 +30,7 @@ async def create_item(item: schemas.Item, db: Session = Depends(get_db)):
 
 
 @router.post("/first-review/", status_code=201, response_model=schemas.Item)
-async def create_first_review_item(item: schemas.Item, db: Session = Depends(get_db)):
+async def create_first_review_item(item: schemas.ItemReview, db: Session = Depends(get_db)):
     if crud.read_item_in_queue_by_name(item):
         raise HTTPException(
             status_code=400,

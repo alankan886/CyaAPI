@@ -1,27 +1,30 @@
 from sqlalchemy.orm import Session
-from datetime import date
+from datetime import date, datetime
 from supermemo2 import SMTwo
 
-from ..schemas.item import Item, ItemCreate, ItemPartialUpdate
+from app import models, schemas
 
 
-def read_items(db: Session):
-    return db.query(Item).all()
+def read_items(db: Session, today: bool):
+    if today:
+        return db.query(models.Item).filter(models.Item.review_date <= date.today()).all()
+
+    return db.query(models.Item).all()
 
 
-def read_item_in_queue_by_name(db: Session, item: Item):
+def read_item_in_queue_by_name(db: Session, item: schemas.Item):
     return (
-        db.query(Item)
-        .filter(Item.name == item.name, Item.queue_id == item.queue_id)
+        db.query(models.Item)
+        .filter(models.Item.name == item.name, item.queue_id == item.queue_id)
         .first()
     )
 
 
-def read_card_by_id(db: Session, item_id: int):
-    return db.query(Item).filter(Item.id == item_id).first()
+def read_item_by_id(db: Session, item_id: int):
+    return db.query(models.Item).filter(models.Item.id == item_id).first()
 
 
-def create_item(db: Session, item: ItemCreate, is_first_review: bool):
+def create_item(db: Session, item: schemas.ItemCreate, is_first_review: bool):
     if is_first_review:
         review_info = SMTwo.first_review(item.quality, item.review_date)
     else:
@@ -29,8 +32,8 @@ def create_item(db: Session, item: ItemCreate, is_first_review: bool):
             item.easiness, item.prev_interval, item.prev_repetitions
         ).review(item.quality, item.review_date)
 
-    item_info = {**review_info.dict(), "name": item.name, "queue_id": item.queue_id}
-    db_item = Item(**item_info)
+    item_info = {**review_info.dict(), "name": item.name, "queue_id": item.queue_id, "created_at": datetime.now()}
+    db_item = models.Item(**item_info)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
@@ -38,7 +41,7 @@ def create_item(db: Session, item: ItemCreate, is_first_review: bool):
     return db_item
 
 
-def update_item(db: Session, item: Item, new_info: ItemPartialUpdate):
+def update_item(db: Session, item: schemas.Item, new_info: schemas.ItemPartialUpdate):
     update_attrs = [
         "name",
         "stack_id",
@@ -60,7 +63,7 @@ def update_item(db: Session, item: Item, new_info: ItemPartialUpdate):
     return item
 
 
-def review_card(db: Session, item: Item, quality: int, review_date: date):
+def review_card(db: Session, item: schemas.Item, quality: int, review_date: date):
     update_attrs = ["quality", "easiness", "interval", "repetitions", "review_date"]
 
     if not review_date:
@@ -79,6 +82,6 @@ def review_card(db: Session, item: Item, quality: int, review_date: date):
     return item
 
 
-def delete_item(db: Session, item: Item):
+def delete_item(db: Session, item: schemas.Item):
     db.delete(item)
     db.commit()

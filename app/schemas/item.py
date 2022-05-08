@@ -15,13 +15,14 @@ class Item(ItemBase):
     interval: int
     repetitions: int
     review_date: date
+    created_at: date
 
 
 class ItemCreate(ItemBase):
-    easiness: Optional[float]
-    interval: Optional[int]
-    repetitions: Optional[int]
-    review_date: Optional[date]
+    easiness: float
+    interval: int
+    repetitions: int
+    review_date: date
 
 
 class ItemPartialUpdate(BaseModel):
