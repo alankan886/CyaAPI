@@ -44,7 +44,7 @@ async def remove_queue(queue_id: str, db: Session = Depends(get_db)):
     db_queue = crud.read_queue_by_id(db, queue_id)
     if not db_queue:
         raise HTTPException(
-            status_code=404, detail=f"Queue with id='{db_queue}' is not found"
+            status_code=404, detail=f"Queue with the id='{queue_id}' is not found"
         )
 
     crud.delete_queue(db, db_queue)
