@@ -1,5 +1,4 @@
 import os
-from typing import Generator
 
 import pytest
 from dotenv import load_dotenv
@@ -33,13 +32,13 @@ def test_client():
     return TestClient(app)
 
 
-@pytest.fixture()
-def test_db():
+@pytest.fixture(autouse=True)
+def db_clean_up():
     # drop before create, pytest has problems tearing down the database last in a fixture
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
 
 @pytest.fixture()
-def test_session():
+def test_db():
     return session

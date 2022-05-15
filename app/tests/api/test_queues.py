@@ -6,9 +6,9 @@ from app.crud import read_queue_by_id
 
 
 def test_read_queues(
-    test_client: TestClient, test_session: Session, test_db: None
+    test_client: TestClient, test_db: Session
 ) -> None:
-    item = create_random_queue(test_session)
+    item = create_random_queue(test_db)
     response = test_client.get(
         "/queues/",
     )
@@ -23,7 +23,7 @@ def test_read_queues(
     assert response_item["created_at"] == str(item.created_at)
 
 
-def test_create_queue(test_client: TestClient, test_db: None) -> None:
+def test_create_queue(test_client: TestClient) -> None:
     test_name = "Test Name"
     test_description = "Test description."
     response = test_client.post(
@@ -37,11 +37,11 @@ def test_create_queue(test_client: TestClient, test_db: None) -> None:
 
 
 def test_update_queue(
-    test_client: TestClient, test_session: Session, test_db: None
+    test_client: TestClient, test_db: Session
 ) -> None:
     new_name = "New Name"
     new_description = "New description."
-    item = create_random_queue(test_session)
+    item = create_random_queue(test_db)
     response = test_client.put(
         f"/queues/{item.id}", json={"name": new_name, "description": new_description}
     )
@@ -54,13 +54,13 @@ def test_update_queue(
 
 # TODO: maybe make test_session into test_db, and test_db into test_db_clean_up and maybe just make it autouse
 def test_delete_queue(
-    test_client: TestClient, test_session: Session, test_db: None
+    test_client: TestClient, test_db: Session
 ) -> None:
-    item = create_random_queue(test_session)
+    item = create_random_queue(test_db)
     item_id = item.id
     response = test_client.delete(f"/queues/{item.id}")
     assert response.status_code == 204
     content = response.json()
 
     assert content == None
-    assert read_queue_by_id(test_session, item_id) == None
+    assert read_queue_by_id(test_db, item_id) == None
