@@ -9,11 +9,7 @@ def read_queues(db: Session):
 
 
 def read_queue_by_name(db: Session, queue: schemas.Queue):
-    return (
-        db.query(models.Queue)
-        .filter(models.Queue.name == queue.name)
-        .first()
-    )
+    return db.query(models.Queue).filter(models.Queue.name == queue.name).first()
 
 
 def read_queue_by_id(db: Session, item_id: int):
@@ -21,7 +17,9 @@ def read_queue_by_id(db: Session, item_id: int):
 
 
 def create_queue(db: Session, queue: schemas.QueueCreate):
-    db_queue = models.Queue(name=queue.name, created_at=datetime.now())
+    db_queue = models.Queue(
+        name=queue.name, description=queue.description, created_at=datetime.now()
+    )
     db.add(db_queue)
     db.commit()
     db.refresh(db_queue)
@@ -32,6 +30,7 @@ def create_queue(db: Session, queue: schemas.QueueCreate):
 def update_queue(db: Session, queue: schemas.Queue, new_info: schemas.QueueUpdate):
     update_attrs = [
         "name",
+        "description",
     ]
 
     for attr in update_attrs:

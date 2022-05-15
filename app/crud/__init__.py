@@ -2,7 +2,9 @@ from .crud_queue import (
     read_queues,
     read_queue_by_name,
     read_queue_by_id,
-    update_queue
+    create_queue,
+    update_queue,
+    delete_queue,
 )
 from .crud_item import (
     read_items,

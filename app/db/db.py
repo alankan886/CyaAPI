@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 load_dotenv(".env")
-SQLALCHEMY_DATABASE_URL = os.environ.get("DB_URL")
+SQLALCHEMY_DATABASE_URL = os.environ.get("DB_URI")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 

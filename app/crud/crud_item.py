@@ -7,7 +7,9 @@ from app import models, schemas
 
 def read_items(db: Session, today: bool):
     if today:
-        return db.query(models.Item).filter(models.Item.review_date <= date.today()).all()
+        return (
+            db.query(models.Item).filter(models.Item.review_date <= date.today()).all()
+        )
 
     return db.query(models.Item).all()
 
@@ -32,7 +34,12 @@ def create_item(db: Session, item: schemas.ItemCreate, is_first_review: bool):
             item.easiness, item.prev_interval, item.prev_repetitions
         ).review(item.quality, item.review_date)
 
-    item_info = {**review_info.dict(), "name": item.name, "queue_id": item.queue_id, "created_at": datetime.now()}
+    item_info = {
+        **review_info.dict(),
+        "name": item.name,
+        "queue_id": item.queue_id,
+        "created_at": datetime.now(),
+    }
     db_item = models.Item(**item_info)
     db.add(db_item)
     db.commit()

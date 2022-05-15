@@ -8,6 +8,7 @@ class Queue(Base):
     __tablename__ = "queues"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(Text, index=True)
+    description = Column(Text)
     created_at = Column(Date)
 
     items = relationship("Item", back_populates="queue")

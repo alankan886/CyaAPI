@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from datetime import date
 
 from pydantic import BaseModel
@@ -11,11 +11,15 @@ class ItemBase(BaseModel):
 
 
 class Item(ItemBase):
+    id: int
     easiness: float
     interval: int
     repetitions: int
     review_date: date
     created_at: date
+
+    class Config:
+        orm_mode = True
 
 
 class ItemCreate(ItemBase):
