@@ -17,26 +17,13 @@ async def read_items(today: bool = False, db: Session = Depends(get_db)):
 
 @router.post("/", status_code=201, response_model=schemas.Item)
 async def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
-    if crud.read_item_in_queue_by_name(item):
+    if crud.read_item_in_queue_by_name(db, item):
         raise HTTPException(
             status_code=400,
-            detail=f"Item with the name '{item.name}' has already exists in Queue '{item.queue}'",
+            detail=f"Item with the name '{item.name}' has already exists in Queue '{item.queue_id}'",
         )
 
-    return crud.create_item(db, item, False)
-
-
-@router.post("/first-review/", status_code=201, response_model=schemas.Item)
-async def create_first_review_item(
-    item: schemas.ItemReview, db: Session = Depends(get_db)
-):
-    if crud.read_item_in_queue_by_name(item):
-        raise HTTPException(
-            status_code=400,
-            detail=f"Item with the name '{item.name}' has already exists in Queue '{item.queue}'",
-        )
-
-    return crud.create_item(db, item, True)
+    return crud.create_item(db, item)
 
 
 @router.patch("/{item_id}/", response_model=schemas.Item)
@@ -44,7 +31,7 @@ async def update_item(
     item_id: str, new_info: schemas.ItemPartialUpdate, db: Session = Depends(get_db)
 ):
     db_item = crud.read_item_by_id(db, item_id)
-    if crud.read_item_in_queue_by_id(item_id):
+    if not db_item:
         raise HTTPException(
             status_code=404, detail=f"Item with the id='{item_id}' is not found"
         )
@@ -52,17 +39,17 @@ async def update_item(
     return crud.update_item(db, db_item, new_info)
 
 
-@router.put("/{item_id}/review/", response_model=schemas.Item)
+@router.patch("/{item_id}/review/", response_model=schemas.Item)
 async def review_item(
     item_id: str, new_info: schemas.ItemReview, db: Session = Depends(get_db)
 ):
     db_item = crud.read_item_by_id(db, item_id)
-    if crud.read_item_in_queue_by_id(item_id):
+    if not db_item:
         raise HTTPException(
             status_code=404, detail=f"Item with the id='{item_id}' is not found"
         )
 
-    return crud.review_card(db, db_item, new_info.quality, new_info.review_date)
+    return crud.review_item(db, db_item, new_info.quality, new_info.review_date)
 
 
 @router.delete("/{item_id}/")

@@ -17,8 +17,8 @@ def read_items(db: Session, today: bool):
 def read_item_in_queue_by_name(db: Session, item: schemas.Item):
     return (
         db.query(models.Item)
-        .filter(models.Item.name == item.name, item.queue_id == item.queue_id)
-        .first()
+        .filter(models.Item.name == item.name, models.Item.queue_id == item.queue_id)
+        .count()
     )
 
 
@@ -26,18 +26,27 @@ def read_item_by_id(db: Session, item_id: int):
     return db.query(models.Item).filter(models.Item.id == item_id).first()
 
 
-def create_item(db: Session, item: schemas.ItemCreate, is_first_review: bool):
-    if is_first_review:
-        review_info = SMTwo.first_review(item.quality, item.review_date)
-    else:
-        review_info = SMTwo(
-            item.easiness, item.prev_interval, item.prev_repetitions
-        ).review(item.quality, item.review_date)
+def create_item(db: Session, item: schemas.ItemCreate):
+    if not item.easiness:
+        item.easiness = 2.5
+
+    if not item.interval:
+        item.interval = 0
+
+    if not item.repetitions:
+        item.repetitions = 0
+
+    if not item.review_date:
+        item.review_date = date.today()
 
     item_info = {
-        **review_info.dict(),
         "name": item.name,
         "queue_id": item.queue_id,
+        "quality": item.quality,
+        "easiness": item.easiness,
+        "interval": item.interval,
+        "repetitions": item.repetitions,
+        "review_date": item.review_date,
         "created_at": datetime.now(),
     }
     db_item = models.Item(**item_info)
@@ -51,7 +60,7 @@ def create_item(db: Session, item: schemas.ItemCreate, is_first_review: bool):
 def update_item(db: Session, item: schemas.Item, new_info: schemas.ItemPartialUpdate):
     update_attrs = [
         "name",
-        "stack_id",
+        "queue_id",
         "quality",
         "easiness",
         "interval",
@@ -70,15 +79,15 @@ def update_item(db: Session, item: schemas.Item, new_info: schemas.ItemPartialUp
     return item
 
 
-def review_card(db: Session, item: schemas.Item, quality: int, review_date: date):
+def review_item(db: Session, item: schemas.Item, quality: int, review_date: date):
     update_attrs = ["quality", "easiness", "interval", "repetitions", "review_date"]
 
     if not review_date:
         review_date = item.review_date
 
-    review_info = SMTwo(
-        item.easiness, item.prev_interval, item.prev_repetitions
-    ).review(quality, review_date)
+    review_info = SMTwo(item.easiness, item.interval, item.repetitions).review(
+        quality, review_date
+    )
     for attr in update_attrs:
         new_value = getattr(review_info, attr)
         setattr(item, attr, new_value)

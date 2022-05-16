@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import date
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -11,7 +11,7 @@ class QueueBase(BaseModel):
 
 class Queue(QueueBase):
     id: int
-    created_at: date
+    created_at: datetime
 
     class Config:
         orm_mode = True

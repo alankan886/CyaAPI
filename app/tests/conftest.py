@@ -32,9 +32,9 @@ def test_client():
     return TestClient(app)
 
 
-@pytest.fixture(autouse=True)
+# TODO: might not need to be module scope later. Setting it now cuz it's being used for test_items, and it's failing
+@pytest.fixture(scope="module", autouse=True)
 def db_clean_up():
-    # drop before create, pytest has problems tearing down the database last in a fixture
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 

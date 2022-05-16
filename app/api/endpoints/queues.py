@@ -26,7 +26,7 @@ async def create_queue(queue: schemas.QueueCreate, db: Session = Depends(get_db)
     return crud.create_queue(db, queue)
 
 
-@router.put("/{queue_id}", response_model=schemas.Queue)
+@router.patch("/{queue_id}/", response_model=schemas.Queue)
 async def update_queue(
     queue_id: str, new_info: schemas.QueueUpdate, db: Session = Depends(get_db)
 ):
@@ -39,7 +39,7 @@ async def update_queue(
     return crud.update_queue(db, db_queue, new_info)
 
 
-@router.delete("/{queue_id}")
+@router.delete("/{queue_id}/")
 async def remove_queue(queue_id: str, db: Session = Depends(get_db)):
     db_queue = crud.read_queue_by_id(db, queue_id)
     if not db_queue:

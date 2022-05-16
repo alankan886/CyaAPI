@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, ForeignKey, Float, Date
+from sqlalchemy import Column, Integer, Text, ForeignKey, Float, DateTime, Date
 from sqlalchemy.orm import relationship
 
 from ..db import Base
@@ -16,6 +16,6 @@ class Item(Base):
     interval = Column(Integer)
     repetitions = Column(Integer)
     review_date = Column(Date)
-    created_at = Column(Date)
+    created_at = Column(DateTime)
 
     queue = relationship("Queue", back_populates="items")
