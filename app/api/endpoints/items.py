@@ -1,4 +1,5 @@
 from typing import List
+from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
@@ -16,7 +17,27 @@ async def read_items(today: bool = False, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=201, response_model=schemas.Item)
-async def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
+async def create_item(
+    item: schemas.ItemCreate,
+    first_review_values: bool = False,
+    db: Session = Depends(get_db),
+):
+    if not first_review_values and not (
+        item.easiness and item.interval and item.repetitions
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Use first review values or provide easiness, interval and repetitions",
+        )
+
+    if first_review_values:
+        item.easiness = 2.5
+        item.interval = 0
+        item.repetitions = 0
+
+    if not item.review_date:
+        item.review_date = date.today()
+
     if crud.read_item_in_queue_by_name(db, item):
         raise HTTPException(
             status_code=400,
@@ -57,7 +78,7 @@ async def remove_item(item_id: str, db: Session = Depends(get_db)):
     db_item = crud.read_item_by_id(db, item_id)
     if not db_item:
         raise HTTPException(
-            status_code=404, detail=f"Item with id='{item_id}' is not found"
+            status_code=404, detail=f"Item with the id='{item_id}' is not found"
         )
 
     crud.delete_item(db, db_item)

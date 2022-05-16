@@ -27,18 +27,6 @@ def read_item_by_id(db: Session, item_id: int):
 
 
 def create_item(db: Session, item: schemas.ItemCreate):
-    if not item.easiness:
-        item.easiness = 2.5
-
-    if not item.interval:
-        item.interval = 0
-
-    if not item.repetitions:
-        item.repetitions = 0
-
-    if not item.review_date:
-        item.review_date = date.today()
-
     item_info = {
         "name": item.name,
         "queue_id": item.queue_id,
@@ -80,8 +68,11 @@ def update_item(db: Session, item: schemas.Item, new_info: schemas.ItemPartialUp
 
 
 def review_item(db: Session, item: schemas.Item, quality: int, review_date: date):
-    update_attrs = ["quality", "easiness", "interval", "repetitions", "review_date"]
+    update_attrs = ["easiness", "interval", "repetitions", "review_date"]
+    item.quality = quality
 
+    # TODO: perhaps take this block out code and put it into endpoints code
+    # keep the crud code closely relate to DB actions
     if not review_date:
         review_date = item.review_date
 
