@@ -30,7 +30,8 @@ def create_item(db: Session, item: schemas.ItemCreate):
     item_info = {
         "name": item.name,
         "queue_id": item.queue_id,
-        "quality": item.quality,
+        # -1 represents an invalid quality value
+        "quality": -1,
         "easiness": item.easiness,
         "interval": item.interval,
         "repetitions": item.repetitions,
