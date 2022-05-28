@@ -7,11 +7,11 @@ from pydantic import BaseModel
 class ItemBase(BaseModel):
     name: str
     queue_id: int
-    quality: int
 
 
 class Item(ItemBase):
     id: int
+    quality: int
     easiness: float
     interval: int
     repetitions: int
